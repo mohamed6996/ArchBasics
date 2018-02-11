@@ -11,27 +11,21 @@ import com.squareup.picasso.Picasso
 
 
 
-class MainAdapter(var photos: PhotoList,var context: Context) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+class MainAdapter(var photos: List<Photo>,var context: Context) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MainViewHolder {
         var view: View = LayoutInflater.from(context).inflate(R.layout.photo_list_item, parent, false)
-       // Log.i("RECEIVED",photos.hits.size.toString())
         return MainViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-         Log.i("RECEIVED","from main adapter ${photos.hits.size}")
-        return photos.hits.size
+        return photos.size
     }
 
 
     override fun onBindViewHolder(holder: MainViewHolder?, position: Int) {
-        Log.i("RECEIVED",photos.hits.size.toString())
-
-        var photo: Photo
-        photo = photos.hits.get(position)
-        Log.i("RECEIVED",photo.previewUrl)
+       var photo: Photo
+        photo = photos.get(position)
         if (photo.previewUrl.isNotEmpty()) {
-            Log.i("RECEIVED",photo.previewUrl)
             Picasso.with(holder?.itemView!!.context)
                     .load(photo.previewUrl)
                     .into(holder.photo)

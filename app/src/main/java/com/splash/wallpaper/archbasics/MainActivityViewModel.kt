@@ -2,11 +2,9 @@ package com.splash.wallpaper.archbasics
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import com.splash.wallpaper.splash.PhotoRetriever
 
 /**
  * Created by lenovo on 2/1/2018.
@@ -14,19 +12,26 @@ import com.splash.wallpaper.splash.PhotoRetriever
 class MainActivityViewModel : ViewModel() {
 
     private val repository: Repository
-    lateinit var photoList: LiveData<PhotoList>
-    val itemsListObservable: MediatorLiveData<List<Photo>>
+    lateinit var photoList: LiveData<List<Photo>>
+    lateinit var context: Context
+    private var internetState = false
 
 
     init {
         repository = Repository()
-        itemsListObservable = MediatorLiveData()
     }
 
-    fun getList(): LiveData<PhotoList> {
+    fun getList(): LiveData<List<Photo>> {
 
-       photoList = repository.getNetworkData()
-        Log.i("RECEIVED","size is ${photoList.value?.hits?.size} from viewModel ")
+        photoList = repository.getLiveData(context, internetState)
         return photoList
+    }
+
+    fun setContextSource(context: Context) {
+        this.context = context
+    }
+
+    fun setInternetState(internetState: Boolean) {
+        this.internetState = internetState
     }
 }
